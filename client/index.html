@@ -27,6 +27,7 @@
     <![endif]-->
 
     <!-- Add your site or application content here -->
+    <div ng-include="'components/navbar/navbar.html'"></div>
     <div ui-view=""></div>
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
@@ -54,6 +55,10 @@
       <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
       <script src="bower_components/lodash/dist/lodash.compat.js"></script>
       <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+      <script src="bower_components/d3/d3.js"></script>
+      <script src="bower_components/angular-mocks/angular-mocks.js"></script>
+      <script src="bower_components/moment/moment.js"></script>
+      <script src="bower_components/n3-line-chart/dist/line-chart.min.js"></script>
       <!-- endbower -->
     <!-- endbuild -->
 
@@ -66,6 +71,9 @@
           <script src="app/account/signup/signup.controller.js"></script>
           <script src="app/admin/admin.controller.js"></script>
           <script src="app/admin/admin.js"></script>
+          <script src="app/dashboard/dashboard.controller.js"></script>
+          <script src="app/dashboard/dashboard.js"></script>
+          <script src="app/dashboard/price-chart.controller.js"></script>
           <script src="app/main/main.controller.js"></script>
           <script src="app/main/main.js"></script>
           <script src="components/auth/auth.service.js"></script>

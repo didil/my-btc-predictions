@@ -5,7 +5,8 @@ angular.module('myBtcPredictionsApp', [
   'ngResource',
   'ngSanitize',
   'ui.router',
-  'ui.bootstrap'
+  'ui.bootstrap',
+  'n3-line-chart'
 ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
     $urlRouterProvider
@@ -27,8 +28,8 @@ angular.module('myBtcPredictionsApp', [
       },
 
       // Intercept 401s and redirect you to login
-      responseError: function(response) {
-        if(response.status === 401) {
+      responseError: function (response) {
+        if (response.status === 401) {
           $location.path('/login');
           // remove any stale tokens
           $cookieStore.remove('token');
@@ -41,12 +42,13 @@ angular.module('myBtcPredictionsApp', [
     };
   })
 
-  .run(function ($rootScope, $location, Auth) {
+  .run(function ($rootScope, $state, Auth) {
     // Redirect to login if route requires auth and you're not logged in
     $rootScope.$on('$stateChangeStart', function (event, next) {
-      Auth.isLoggedInAsync(function(loggedIn) {
+      Auth.isLoggedInAsync(function (loggedIn) {
         if (next.authenticate && !loggedIn) {
-          $location.path('/login');
+          event.preventDefault();
+          $state.go('login');
         }
       });
     });
