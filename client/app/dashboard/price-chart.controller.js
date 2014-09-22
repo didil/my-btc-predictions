@@ -24,7 +24,7 @@ angular.module('myBtcPredictionsApp')
       },
       series: [
         {y: 'real', color: 'steelblue', thickness: '3px', striped: true, label: 'BTC/USD (Bitstamp)'},
-        {y: 'forecast', color: 'purple',  thickness: '3px', dotSize: 5, label: 'BTC/USD (Your forecast)'}
+        {y: 'forecast', color: 'purple',  thickness: '3px', dotSize: 5,lineMode:'dashed', label: 'BTC/USD (Your forecast)'}
       ],
       lineMode: 'linear',
       tension: 0.7,
