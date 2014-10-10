@@ -1,15 +1,19 @@
 'use strict';
 
 angular.module('myBtcPredictionsApp')
-  .controller('PriceChartCtrl', function ($scope,$filter) {
+  .controller('PriceChartCtrl', function ($scope,$filter,Price) {
     $scope.data = [
-      {x: new Date("2014-08-20"), real: 14},
-      {x: new Date("2014-09-20"), real: 1},
-      {x: new Date("2014-10-20"), real: 15, forecast: 11},
-      {x: new Date("2014-11-20"), forecast: 147},
-      {x: new Date("2014-12-20"), forecast: 87},
-      {x: new Date("2015-01-15"), forecast: 45}
+      {x: new Date('2014-11-20'), forecast: 147},
+      {x: new Date('2014-12-20'), forecast: 87},
+      {x: new Date('2015-01-15'), forecast: 45}
     ];
+
+    var prices = Price.query();
+    prices.$promise.then(function(){
+      prices.forEach(function(price){
+        $scope.data.push({x: new Date(price.date) , real: price.value })
+      })
+    });
 
     $scope.options = {
       axes: {
@@ -18,7 +22,7 @@ angular.module('myBtcPredictionsApp')
           labelFunction: function (value) {
             return $filter('date')(value,'MMMM yyyy');
           },
-          type: 'date', min: 0, max: 5
+          type: 'date'
         },
         y: {type: 'linear'}
       },
@@ -32,6 +36,6 @@ angular.module('myBtcPredictionsApp')
       drawLegend: true,
       drawDots: true,
       columnsHGap: 5
-    }
+    };
 
   });
