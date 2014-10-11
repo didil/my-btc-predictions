@@ -664,29 +664,4 @@ module.exports = function (grunt) {
     'build'
   ]);
 
-  // Project specific tasks
-
-  grunt.registerTask('fetch_prices', 'Fetch Prices for last 12 months', function() {
-    var done = this.async();
-    grunt.log.writeln('Fetching prices ...');
-
-    var moment = require('moment');
-    var PriceFetcher = require('./server/components/price_fetcher');
-
-    var dates = [];
-    for (var i = 0; i < 12; i++) {
-      var initDate = moment().subtract(12, 'months').startOf('month').add(1, 'month');
-      dates.push(initDate.add(i, 'month').format("YYYY-MM-DD"));
-    }
-
-    var priceFetcher = new PriceFetcher();
-    priceFetcher.fetch(dates, function (err, priceAtributes) {
-      priceAtributes.forEach(function(priceAttribute){
-        grunt.log.writeln(priceAttribute);
-      });
-      done();
-    });
-
-  });
-
 };
