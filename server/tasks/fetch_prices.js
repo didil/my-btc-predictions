@@ -4,7 +4,7 @@ var config = require('../config/environment');
 var moment = require('moment');
 var mongoose = require('mongoose');
 var async = require('async');
-var PriceFetcher = require('../components/price_fetcher');
+var PriceFetcher = require('../components/price_fetcher/price_fetcher');
 var Price = require('../api/price/price.model');
 
 // Connect to database
@@ -24,7 +24,7 @@ Price.remove({}, function (err) {
   }
 
   async.each(dates, function (date, callback) {
-      var priceFetcher = new PriceFetcher();
+      var priceFetcher = new PriceFetcher(config.quandl.authToken);
       priceFetcher.fetch(date, function (err, priceAttributes) {
         if (err) {
           console.log("Could not fetch price");
@@ -46,10 +46,16 @@ Price.remove({}, function (err) {
         return console.log(err);
       }
 
-      mongoose.disconnect();
+      Price.count({}, function( err, count){
+        if (err){
+          console.log(err);
+        }
+
+        console.log( "Number of prices: ", count );
+        mongoose.disconnect();
+      });
     }
   );
-
 });
 
 

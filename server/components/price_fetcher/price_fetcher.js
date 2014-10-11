@@ -1,14 +1,16 @@
 'use strict';
 
-var config = require('../../config/environment');
 var Quandl = require('quandl');
 
+var PriceFetcher = function (token) {
+  var options = {};
 
-var PriceFetcher = function () {
-  this.quandl = new Quandl({
-    auth_token: config.quandl.authToken,
-    api_version: 1
-  });
+  options.api_version = 1;
+  if (token) {
+    options.auth_token = token;
+  }
+
+  this.quandl = new Quandl(options);
 };
 
 PriceFetcher.prototype.fetch = function (date, next) {
