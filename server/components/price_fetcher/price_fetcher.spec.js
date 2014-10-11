@@ -17,10 +17,11 @@ describe('PriceFetcher', function () {
       ]});
   });
 
-  it('gives prices data', function () {
+  it('gives prices data', function (done) {
     var priceFetcher = new PriceFetcher(token);
     priceFetcher.fetch(date, function (err, priceAttributes) {
-      priceAttributes.should.eql({"date": date, value: value})
+      priceAttributes.should.eql({"date": date, value: value});
+      done();
     });
   });
 
