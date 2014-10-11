@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "main": "server/app.js",
   "dependencies": {
+    "async": "^0.9.0",
     "body-parser": "~1.5.0",
     "composable-middleware": "^0.3.0",
     "compression": "~1.0.1",
@@ -23,6 +24,7 @@
     "passport-facebook": "latest",
     "passport-google-oauth": "latest",
     "passport-local": "~0.1.6",
+    "quandl": "0.0.3",
     "serve-favicon": "~2.0.1"
   },
   "devDependencies": {

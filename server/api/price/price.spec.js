@@ -16,10 +16,10 @@ describe('GET /api/prices', function () {
   });
 
   beforeEach(function (done) {
-    var initDate = moment().subtract(13, 'months').startOf('month').add(1, 'month');
-
     var attrsList = [];
     for (var i = 0; i < 12; i++) {
+      var initDate = moment().subtract(12, 'months').startOf('month').add(1, 'month');
+
       var attrs = {date: initDate.add(i, 'month'), value: 300 + i };
       attrsList.push(attrs);
     }
