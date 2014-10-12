@@ -17,9 +17,11 @@ for (var i = 0; i < 12; i++) {
   dates.push(initDate.add(i, 'month').format("YYYY-MM-DD"));
 }
 
+
+var priceAttributesArray = [];
+
 Price.remove({}, function (err) {
   if (err) {
-    mongoose.disconnect();
     return console.log(err);
   }
 
@@ -27,35 +29,32 @@ Price.remove({}, function (err) {
       var priceFetcher = new PriceFetcher(config.quandl.authToken);
       priceFetcher.fetch(date, function (err, priceAttributes) {
         if (err) {
-          console.log("Could not fetch price");
           return callback(err);
         }
 
-        Price.create(priceAttributes, function (err) {
-          if (err) {
-            console.log("Could not save price");
-            return callback(err);
-          }
-
-          callback();
-        });
+        priceAttributesArray.push(priceAttributes);
+        callback();
       });
     },
     function (err) {
       if (err) {
-        return console.log(err);
+        return console.log("Could not fetch price: " +err);
       }
 
-      Price.count({}, function( err, count){
-        if (err){
-          console.log(err);
+      Price.create(priceAttributesArray, function (err) {
+        if (err) {
+          console.log("Could not save prices: " + err);
         }
 
-        console.log( "Number of prices: ", count );
-        mongoose.disconnect();
+        console.log("Created: " + priceAttributesArray.length + " prices");
       });
     }
   );
+});
+
+
+process.on('exit',function(){
+  mongoose.disconnect();
 });
 
 

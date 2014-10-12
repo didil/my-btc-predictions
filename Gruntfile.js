@@ -597,40 +597,52 @@ module.exports = function (grunt) {
     grunt.task.run(['serve']);
   });
 
+  grunt.registerTask('test-server', function() {
+    return grunt.task.run([
+      'env:all',
+      'env:test',
+      'mochaTest'
+    ]);
+  });
+
+  grunt.registerTask('test-client', function() {
+    return grunt.task.run([
+      'clean:server',
+      'env:all',
+      'injector:less',
+      'concurrent:test',
+      'injector',
+      'autoprefixer',
+      'karma'
+    ]);
+  });
+
+  grunt.registerTask('test-e2e', function() {
+    return grunt.task.run([
+      'clean:server',
+      'env:all',
+      'env:test',
+      'injector:less',
+      'concurrent:test',
+      'injector',
+      'wiredep',
+      'autoprefixer',
+      'express:dev',
+      'protractor'
+    ]);
+  });
+
   grunt.registerTask('test', function(target) {
     if (target === 'server') {
-      return grunt.task.run([
-        'env:all',
-        'env:test',
-        'mochaTest'
-      ]);
+      return grunt.task.run('test-server');
     }
 
     else if (target === 'client') {
-      return grunt.task.run([
-        'clean:server',
-        'env:all',
-        'injector:less', 
-        'concurrent:test',
-        'injector',
-        'autoprefixer',
-        'karma'
-      ]);
+      return grunt.task.run('test-client');
     }
 
     else if (target === 'e2e') {
-      return grunt.task.run([
-        'clean:server',
-        'env:all',
-        'env:test',
-        'injector:less', 
-        'concurrent:test',
-        'injector',
-        'wiredep',
-        'autoprefixer',
-        'express:dev',
-        'protractor'
-      ]);
+      return grunt.task.run('test-e2e');
     }
 
     else grunt.task.run([
@@ -638,6 +650,9 @@ module.exports = function (grunt) {
       'test:client'
     ]);
   });
+
+
+
 
   grunt.registerTask('build', [
     'clean:dist',

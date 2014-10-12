@@ -17,7 +17,8 @@ var UserSchema = new Schema({
   salt: String,
   facebook: {},
   google: {},
-  github: {}
+  github: {},
+  predictions: [{ type: Schema.Types.ObjectId, ref: 'Prediction' }]
 });
 
 /**
