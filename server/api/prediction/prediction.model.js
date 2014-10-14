@@ -25,19 +25,18 @@ PredictionSchema
  */
 
 // no prediction for same date by the same user
-PredictionSchema.pre("save",function(next, done) {
+PredictionSchema.pre("save",function(next) {
   var self = this;
   mongoose.models["Prediction"].findOne({user : self.user, date: self.date},function(err, prediction) {
     if(err) {
-      done(err);
+      next(err);
     } else if(prediction) {
       self.invalidate("date","date must be unique for the same user");
-      done(new Error("date must be unique for the same user"));
+      next(new Error("date must be unique for the same user"));
     } else {
-      done();
+      next();
     }
   });
-  next();
 });
 
 module.exports = mongoose.model('Prediction', PredictionSchema);

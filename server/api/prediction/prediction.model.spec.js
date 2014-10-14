@@ -35,13 +35,13 @@ describe('Prediction Model', function () {
       value: 180
     });
 
-    before(function (done) {
+    beforeEach(function (done) {
       user.save(function (err) {
-        if (err) {throw err};
+        if (err) throw err ;
 
         prediction.user = user;
         prediction.save(function (err) {
-          if (err) {throw err};
+          if (err) throw err;
           done();
         })
       });
