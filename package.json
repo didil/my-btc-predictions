@@ -20,6 +20,7 @@
     "moment": "^2.8.3",
     "mongoose": "~3.8.8",
     "morgan": "~1.0.0",
+    "newrelic": "^1.12.0",
     "passport": "~0.2.0",
     "passport-facebook": "latest",
     "passport-google-oauth": "latest",
