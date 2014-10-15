@@ -14,7 +14,7 @@ exports.index = function (req, res) {
 
       var dates = [];
       for (var i = 0; i < 6; i++) {
-        var initDate = moment().add(1, 'month').startOf('month');
+        var initDate = moment.utc().add(1, 'month').startOf('month').add(12,'hours');
         var date = initDate.add(i, 'month');
         dates.push(date);
       }
