@@ -22,7 +22,8 @@ var priceAttributesArray = [];
 
 Price.remove({}, function (err) {
   if (err) {
-    return console.log(err);
+    mongoose.disconnect();
+    return  console.log(err);
   }
 
   async.each(dates, function (date, callback) {
@@ -47,14 +48,10 @@ Price.remove({}, function (err) {
         }
 
         console.log("Created: " + priceAttributesArray.length + " prices");
+        mongoose.disconnect();
       });
     }
   );
-});
-
-
-process.on('exit',function(){
-  mongoose.disconnect();
 });
 
 
