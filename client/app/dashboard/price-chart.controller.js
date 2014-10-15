@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('myBtcPredictionsApp')
-  .controller('PriceChartCtrl', function ($scope, $filter, Price) {
+  .controller('PriceChartCtrl', function ($scope, $filter, Price, Prediction,predictionsManager) {
     $scope.data = [];
 
     var prices = Price.query();
@@ -11,17 +11,27 @@ angular.module('myBtcPredictionsApp')
       })
     });
 
-    var predictions = [
-//      {date: '2014-11-01', value: 350 } ,
-//      {date: '2014-12-01', value: 320 } ,
-//      {date: '2015-01-01', value: 500 } ,
-//      {date: '2015-02-01', value: 480 } ,
-//      {date: '2015-03-01', value: 600 } ,
-//      {date: '2015-04-01', value: 1000 }
-    ];
+    $scope.updatePredictions = function(){
+      _.remove($scope.data,function(el){
+        return !(_.isUndefined(el.forecast));
+      });
 
-    predictions.forEach(function (prediction) {
-      $scope.data.push({x: new Date(prediction.date), forecast: prediction.value })
+      predictionsManager.predictions.forEach(function (prediction) {
+        $scope.data.push({x: new Date(prediction.date), forecast: prediction.value })
+      });
+
+      if (predictionsManager.predictions.length > 0 && _.any(predictionsManager.predictions, function(prediction) {return prediction.value }) && !_.some($scope.options.series,{y: 'forecast'}) ) {
+        $scope.options.series.push({y: 'forecast', color: 'purple', thickness: '3px', dotSize: 4, lineMode: 'dashed', label: 'BTC/USD (Your forecast)'});
+      }
+    };
+
+    predictionsManager.predictions = Prediction.query();
+    predictionsManager.predictions.$promise.then(function () {
+      $scope.updatePredictions();
+    });
+
+    $scope.$on('predictionsChanged', function() {
+      $scope.updatePredictions();
     });
 
     var averagePredictions = [
@@ -46,7 +56,7 @@ angular.module('myBtcPredictionsApp')
           },
           type: 'date'
         },
-        y: {type: 'linear'}
+        y: {type: 'linear', min:0}
       },
       series: [
         {y: 'real', color: 'steelblue', thickness: '3px', striped: true, label: 'BTC/USD (Bitstamp)'}
@@ -59,11 +69,7 @@ angular.module('myBtcPredictionsApp')
       columnsHGap: 5
     };
 
-    if (predictions.length > 0) {
-      $scope.options.series.push({y: 'forecast', color: 'purple', thickness: '3px', dotSize: 4, lineMode: 'dashed', label: 'BTC/USD (Your forecast)'});
-    }
-
-    if (averagePredictions.length > 0) {
+    if (averagePredictions.length > 0 ) {
       $scope.options.series.push({y: 'crowd_forecast', color: 'orange', thickness: '2px', dotSize: 4, lineMode: 'dashed', label: 'BTC/USD (Crowd forecast)'});
     }
 
