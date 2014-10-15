@@ -12,7 +12,7 @@
   <div class="row">
     <form name="predictions_form" ng-controller="PredictionsCtrl">
       <div class="form-group col-md-2" ng-repeat="prediction in predictions">
-        <label>{{prediction.date | date:'MMMM yyyy'}}</label>
+        <label>{{prediction.date | date:'MMMM yyyy' : 'UTC'}}</label>
         <input type="text" ng-model="prediction.value" class="form-control"/>
       </div>
       <div class="form-group">
